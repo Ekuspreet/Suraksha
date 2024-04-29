@@ -9,11 +9,11 @@ const NavbarProfile = () => {
             </div>
 
             <div className="navbar-end mr-5">
-                <div className="avatar">
-                    <div className=" w-12 rounded-full">
-                        <img src="https://ui-avatars.com/api/?&name=Ekuspreet+Singh&background=000&color=fff" />
+                <button className="avatar btn btn-ghost " onClick={()=>document.getElementById('user_modal').showModal()}>
+                    <div className="  w-12 rounded-full ">
+                        <img  src="https://ui-avatars.com/api/?&name=Ekuspreet+Singh&background=000&color=fff" />
                     </div>
-                </div>
+                </button>
             </div>
         </div>
     )

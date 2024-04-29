@@ -8,7 +8,7 @@ const Login = () => {
                 <div className="divider">Enter Details</div>
             <label className="input input-bordered flex items-center gap-2">
                 Phone
-                <input required type="text" className="grow" placeholder="8887776665" />
+                <input required type="number" className="grow" placeholder="8887776665" />
             </label>
             <button className='btn  btn-neutral text-neutral-content mt-2'>Send OTP</button>
             
