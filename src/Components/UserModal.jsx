@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import Cookies from 'js-cookie';
 import axios from 'axios';
-
+import { useNavigate } from 'react-router-dom';
 const UserModal = ({ Name, PhoneNumber }) => {
     const [message, setMessage] = useState('');
     const [userMessage, setUserMessage] = useState('');
-
+    const navigate = useNavigate();
     useEffect(() => {
         fetchUserMessage();
     }, []);
@@ -81,7 +81,7 @@ const UserModal = ({ Name, PhoneNumber }) => {
     </div>
     <div className="actions flex gap-5 justify-center">
     <button type="submit" className="btn btn-md btn-primary">Save</button>
-    <button className="btn btn-neutral" onClick={() => { Cookies.remove('token'); location.reload() }}>Log Out</button>
+    <button className="btn btn-neutral" onClick={() => { Cookies.remove('token'); navigate("/") }}>Log Out</button>
     </div>
 </form>
 

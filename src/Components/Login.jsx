@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-
+import Cookie from 'js-cookie';
 const Login = () => {
     const navigate = useNavigate();
     const [phoneNumber, setPhoneNumber] = useState('');
@@ -13,6 +13,7 @@ const Login = () => {
             // Send a request to the backend to generate and send OTP
             await axios.post('/api/generate-otp', { phoneNumber });
             console.log('OTP sent successfully');
+           
         } catch (error) {
             console.error('Error sending OTP:', error);
         }
@@ -22,8 +23,11 @@ const Login = () => {
         e.preventDefault()
         try {
             // Send a request to the backend to login with phone number and OTP
+            console.log(phoneNumber,otp)
             const response = await axios.post('/api/login', { phoneNumber, otp });
             console.log('Login successful:', response.data);
+            Cookie.set('token',response.data.token);
+            navigate("/dashboard")
             // You can handle the response here, such as storing the token in local storage or redirecting to another page
         } catch (error) {
             console.error('Error logging in:', error);
@@ -39,7 +43,7 @@ const Login = () => {
                     Phone
                     <input 
                         required 
-                        type="number" 
+                        type="text" 
                         className="grow" 
                         placeholder="8887776665" 
                         value={phoneNumber} 

@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import Cookie from 'js-cookie';
-
+import { useNavigate } from 'react-router-dom';
 const SOS = () => {
+  const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
@@ -33,9 +34,10 @@ const SOS = () => {
 
   const sendSOS = async (token, latitude, longitude) => {
     try {
-      const response = await axios.post('/sos', {
+      const response = await axios.post('/api/sos', {
         latitude,
-        longitude
+        longitude,
+        token
       }, {
         headers: {
           'Content-Type': 'application/json',
@@ -47,6 +49,7 @@ const SOS = () => {
       setLoading(false);
       setError(null);
       alert('SOS message sent to emergency contacts');
+      navigate("/emergency")
     } catch (error) {
       setLoading(false);
       setError(error.response.data.error || 'An error occurred while sending SOS');

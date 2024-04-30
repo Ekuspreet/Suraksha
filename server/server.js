@@ -56,7 +56,7 @@ function createOtpStorage() {
     app.post('/validate-otp', async (req, res) => {
         try {
             const { phoneNumber, otp, name } = req.body;
-
+            console.log(req.body)
             // Verify OTP
             if (!otpStorage[phoneNumber]) {
                 return res.status(400).json({ error: 'Resend OTP' });
@@ -253,7 +253,7 @@ app.post('/add-contact', async (req, res) => {
         if (!user) {
             return res.status(404).json({ error: 'User not found' });
         }
-        console.log(contact)
+        console.log(contact.phone)
         // Create a new array of emergency contacts with the added contact
         const updatedEmergencyContacts = [...user.EmergencyNumbers, contact.phone];
         
@@ -276,7 +276,7 @@ app.post('/add-contact', async (req, res) => {
 app.post('/delete-contact', async (req, res) => {
     try {
         const { token, phoneNumber } = req.body;
-
+        console.log(req.body)
         // Verify the JWT token
         const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
 
@@ -290,13 +290,13 @@ app.post('/delete-contact', async (req, res) => {
         }
 
         // Find the index of the contact to be deleted
-        const index = user.EmergencyContacts.findIndex(contact => contact.phone === phoneNumber);
+        const index = user.EmergencyNumbers.findIndex(contact => contact === phoneNumber);
         if (index === -1) {
             return res.status(404).json({ error: 'Contact not found' });
         }
 
         // Remove the contact from user's emergency contacts
-        user.EmergencyContacts.splice(index, 1);
+        user.EmergencyNumbers.splice(index, 1);
         await user.save();
 
         // Respond with success message
@@ -324,22 +324,29 @@ app.post('/sos', async (req, res) => {
         const userId = decodedToken.userId;
 
         // Find the user in the database based on the user ID
-        const user = await Contact.findById(userId).populate('EmergencyNumbers');
+        const user = await Contact.findById(userId);
         if (!user) {
             return res.status(404).json({ error: 'User not found' });
         }
+        const sosMessage = user.SOSMessage;
+        
 
         // Extract SOS message from user's data
-        const sosMessage = user.SOSMessage;
+        
 
         // Prepare SOS message with latitude and longitude
-        const sosWithLocation = `${sosMessage} Location: ${latitude}, ${longitude}`;
+        const locationLink = `https://www.google.com/maps/dir/?api=1&destination=${latitude},${longitude}`;
+
+        const sosWithLocation = `${sosMessage} Location: ${latitude}, ${longitude} : Click The Link To Find Me : ${locationLink}`;
 
         // Send SOS message to all emergency contacts
+        
         for (const contact of user.EmergencyNumbers) {
+            console.log(contact)
             try {
                 // Send SOS message to the contact (assuming a function named sendMessage)
-                await sendSMS(contact.phone, sosWithLocation); // Adjust this based on your messaging service
+            const response =  await sendSMS(contact, sosWithLocation); // Adjust this based on your messaging service
+            
             } catch (error) {
                 console.error('Error sending SOS message to contact:', error);
             }

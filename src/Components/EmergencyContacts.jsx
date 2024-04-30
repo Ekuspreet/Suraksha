@@ -18,8 +18,10 @@ const EmergencyContacts = () => {
             const response = await axios.post('/api/dashboard', { token });
             const user = response.data.user;
             const emergencyContacts = user ? user.EmergencyNumbers || [] : [];
+            console.log(emergencyContacts)
             console.log(response.data.user)
             setContacts(emergencyContacts);
+            console.log(contacts)
             setLoading(false);
         } catch (error) {
             console.error('Error fetching emergency contacts:', error);
@@ -32,7 +34,7 @@ const EmergencyContacts = () => {
             const token = Cookies.get('token'); // Fetch token from cookies
             const response = await axios.post('/api/add-contact', { token, contact: { phone: newContactPhone } });
             const { contactId } = response.data;
-            setContacts([...contacts, { id: contactId, phone: newContactPhone }]);
+            setContacts([...contacts, newContactPhone ]);
             setNewContactPhone('');
         } catch (error) {
             console.error('Error adding contact:', error);
@@ -53,7 +55,7 @@ const EmergencyContacts = () => {
 
             <div className="bottom bg-accent sticky bottom-0 py-1 mb-3">
                 <div className="divider">Add A Contact</div>
-                <div className="action flex justify-center  gap-2">
+                <div className="action flex justify-center  gap-2 flex-wrap">
                     <label className="input input-bordered text-primary flex items-center ">
                         Phone
                         <input
