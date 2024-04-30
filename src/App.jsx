@@ -17,7 +17,7 @@ function App() {
     <Routes>
     {/* Default Route */}
     <Route 
-    path='/'
+    path='/emergency'
     element={<Emergency/>}
     />
     <Route 
@@ -25,11 +25,11 @@ function App() {
     element={<Dashboard/>}
     />
     <Route 
-    path='/login'
+    path='/'
     element={<LoginPage/>}
     />
     <Route 
-    path='/signup'
+    path='/register'
     element={<Registration/>}
     />
     </Routes>

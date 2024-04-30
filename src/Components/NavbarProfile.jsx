@@ -1,6 +1,6 @@
 import React from 'react'
 
-const NavbarProfile = () => {
+const NavbarProfile = ({Name}) => {
     return (
         <div className="navbar bg-neutral text-neutral-content rounded-md mt-2">
 
@@ -11,7 +11,7 @@ const NavbarProfile = () => {
             <div className="navbar-end mr-5">
                 <button className="avatar btn btn-ghost " onClick={()=>document.getElementById('user_modal').showModal()}>
                     <div className="  w-12 rounded-full ">
-                        <img  src="https://ui-avatars.com/api/?&name=Ekuspreet+Singh&background=000&color=fff" />
+                        <img  src=  {`https://ui-avatars.com/api/?&name=${Name}&background=000&color=fff`} />
                     </div>
                 </button>
             </div>
